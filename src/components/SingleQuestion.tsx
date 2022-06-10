@@ -4,55 +4,41 @@ import { nanoid } from "nanoid";
 import "../styles/singleQuestion.css";
 
 import { isPropertySignature } from "typescript";
+import { BtnComponent } from "./BtnComponent";
 
 interface singleQuestionProps {
   question: string;
-  answers: string[];
   correctAnswer: string;
-  answerToggle: (theChosenOne: string) => void;
+  allAnswers: string[];
+  isItRight: boolean[];
+  isItRightToggle: (surprise: boolean, numOfQuestion: number) => void;
+  activeButtonToggle: (obj: any) => void;
+  activeButton: any;
 }
 
 export const SingleQuestion = (props: singleQuestionProps) => {
-  //generating randomnumber array
-  const randNumGenerator = (length: number): number[] => {
-    let randNum = Math.floor(Math.random() * length);
-    let randArr = [randNum];
-    randNum = Math.floor(Math.random() * length);
+  const [choosedAns, setChoosedAns] = React.useState("helo");
 
-    for (let i = 0; i < length - 1; i++) {
-      for (let k = 0; k < randArr.length; k++) {
-        if (randArr[k] === randNum) {
-          randNum = Math.floor(Math.random() * length);
-          k = -1;
-        }
-      }
-
-      randArr.push(randNum);
-      randNum = Math.floor(Math.random() * length);
-    }
-    return randArr;
+  const choosedAnsToggle = (ans: string) => {
+    setChoosedAns(ans);
   };
-  // consts and variables
-  const allAnswers = [...props.answers, props.correctAnswer];
-  const randArr = randNumGenerator(allAnswers.length);
-  const mixedAnswers: string[] = [];
 
-  React.useEffect(() => {
-    console.log("hi");
-
-    for (let i = 0; i < randArr.length; i++) {
-      mixedAnswers.push(allAnswers[randArr[i]]);
-    }
-  }, []);
+  React.useEffect(() => {}, []);
+  console.log(choosedAns);
 
   return (
     <div className="singleQuestion">
-      <h3>{props.question}</h3>
+      <h3 dangerouslySetInnerHTML={{ __html: `${props.question}` }}></h3>
       <div className="btnsContainer">
-        {mixedAnswers.map((obj) => (
-          <button key={nanoid()} onClick={() => props.answerToggle(obj)}>
-            {obj}
-          </button>
+        {props.allAnswers.map((obj, index) => (
+          <BtnComponent
+            key={nanoid()}
+            ans={obj}
+            choosedAns={choosedAns}
+            choosedAnsToggle={choosedAnsToggle}
+            // numOfQuestion={index}
+            correctAnswer={props.correctAnswer}
+          />
         ))}
       </div>
       <hr />

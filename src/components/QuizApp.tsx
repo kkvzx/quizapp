@@ -1,45 +1,63 @@
 import React, { FC } from "react";
 import { nanoid } from "nanoid";
 import { SingleQuestion } from "./SingleQuestion";
+import { masterMixer } from "./masterMIxer";
 
 export const QuizApp = () => {
   const [apiData, setApiData] = React.useState<any[]>([]);
-  const [reset, setReset] = React.useState(false);
-  const [choosedAnswer, setChoosedAnswer] = React.useState(false);
+  const [isItRight, setIsItRight] = React.useState<boolean[]>([]);
+  const [counter, setCounter] = React.useState(0);
+  const [activeButton, setActiveButton] = React.useState<any[]>([]);
 
-  // Getting the data from API
+  // Getting the data from API and creating additional property with all the answers ("allAnswers")
   React.useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5")
       .then((response) => response.json())
-      .then((data) => setApiData(data.results))
+      .then((data) => {
+        setApiData(data.results);
+        setApiData((prevState) =>
+          prevState.map((singleObj) => ({
+            ...singleObj,
+            allAnswers: masterMixer(
+              singleObj.incorrect_answers,
+              singleObj.correct_answer
+            ),
+          }))
+        );
+      })
       .catch((error) => {
         console.log("error");
       });
   }, []);
 
-  // answer color
-  const answerToggle = (theChosenOne: string) => {
-    setChoosedAnswer((prev) => !prev);
+  const isItRightToggle = (surprise: boolean, numOfQuestion: number): void => {
+    setIsItRight((prev) => [...prev]);
   };
 
-  const htmlElements = apiData.map((singleObj) => (
+  const activeButtonToggle = (obj: any) => {
+    setActiveButton(obj);
+  };
+  const htmlElements = apiData.map((singleObj, index) => (
     <SingleQuestion
       key={nanoid()}
       question={singleObj.question}
-      answers={singleObj.incorrect_answers}
       correctAnswer={singleObj.correct_answer}
-      answerToggle={answerToggle}
+      allAnswers={singleObj.allAnswers}
+      isItRight={isItRight}
+      isItRightToggle={isItRightToggle}
+      activeButtonToggle={activeButtonToggle}
+      activeButton={activeButton}
     />
   ));
 
-  const resetFunc = () => {
-    setReset((prev) => !prev);
+  const check = () => {
+    console.log("xsadasda");
   };
 
   return (
     <div>
       <div className="quizApp">{htmlElements}</div>
-      <button onClick={resetFunc}>click</button>
+      <button onClick={() => check()}>Click me or die</button>
     </div>
   );
 };
