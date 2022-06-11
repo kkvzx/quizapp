@@ -1,43 +1,31 @@
 import React from "react";
 import { nanoid } from "nanoid";
-
 import "../styles/singleQuestion.css";
-
-import { isPropertySignature } from "typescript";
 import { BtnComponent } from "./BtnComponent";
 
 interface singleQuestionProps {
   question: string;
   correctAnswer: string;
   allAnswers: string[];
-  isItRight: boolean[];
-  isItRightToggle: (surprise: boolean, numOfQuestion: number) => void;
-  activeButtonToggle: (obj: any) => void;
-  activeButton: any;
+  userChecked: boolean;
+  choosedAns: string;
+  mainIndex: number;
+  choosedAnsToggle: (ans: string, mainIndex: number) => void;
 }
-
 export const SingleQuestion = (props: singleQuestionProps) => {
-  const [choosedAns, setChoosedAns] = React.useState("helo");
-
-  const choosedAnsToggle = (ans: string) => {
-    setChoosedAns(ans);
-  };
-
-  React.useEffect(() => {}, []);
-  console.log(choosedAns);
-
   return (
     <div className="singleQuestion">
       <h3 dangerouslySetInnerHTML={{ __html: `${props.question}` }}></h3>
       <div className="btnsContainer">
-        {props.allAnswers.map((obj, index) => (
+        {props.allAnswers.map((obj) => (
           <BtnComponent
             key={nanoid()}
             ans={obj}
-            choosedAns={choosedAns}
-            choosedAnsToggle={choosedAnsToggle}
-            // numOfQuestion={index}
+            choosedAns={props.choosedAns}
+            choosedAnsToggle={props.choosedAnsToggle}
+            mainIndex={props.mainIndex}
             correctAnswer={props.correctAnswer}
+            userChecked={props.userChecked}
           />
         ))}
       </div>

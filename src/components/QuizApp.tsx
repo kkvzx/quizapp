@@ -5,9 +5,8 @@ import { masterMixer } from "./masterMIxer";
 
 export const QuizApp = () => {
   const [apiData, setApiData] = React.useState<any[]>([]);
-  const [isItRight, setIsItRight] = React.useState<boolean[]>([]);
-  const [counter, setCounter] = React.useState(0);
-  const [activeButton, setActiveButton] = React.useState<any[]>([]);
+  const [userChecked, setUserChecked] = React.useState<boolean>(false);
+  const [choosedAns, setChoosedAns] = React.useState<string[]>([]);
 
   // Getting the data from API and creating additional property with all the answers ("allAnswers")
   React.useEffect(() => {
@@ -30,29 +29,31 @@ export const QuizApp = () => {
       });
   }, []);
 
-  const isItRightToggle = (surprise: boolean, numOfQuestion: number): void => {
-    setIsItRight((prev) => [...prev]);
+  const choosedAnsToggle = (ans: string, index: number) => {
+    setChoosedAns((prev): any => {
+      const newArr = [...prev];
+      newArr[index] = ans;
+      return newArr;
+    });
   };
 
-  const activeButtonToggle = (obj: any) => {
-    setActiveButton(obj);
+  const check = () => {
+    setUserChecked((prev) => !prev);
   };
+
+  console.log("hello");
   const htmlElements = apiData.map((singleObj, index) => (
     <SingleQuestion
       key={nanoid()}
       question={singleObj.question}
       correctAnswer={singleObj.correct_answer}
       allAnswers={singleObj.allAnswers}
-      isItRight={isItRight}
-      isItRightToggle={isItRightToggle}
-      activeButtonToggle={activeButtonToggle}
-      activeButton={activeButton}
+      userChecked={userChecked}
+      choosedAns={choosedAns[index]}
+      mainIndex={index}
+      choosedAnsToggle={choosedAnsToggle}
     />
   ));
-
-  const check = () => {
-    console.log("xsadasda");
-  };
 
   return (
     <div>

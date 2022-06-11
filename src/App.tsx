@@ -4,7 +4,7 @@ import { QuizApp } from "./components/QuizApp";
 import { WelcomePage } from "./components/WelcomePage";
 
 export const App = () => {
-  const [start, setStart] = React.useState(true);
+  const [start, setStart] = React.useState(false);
 
   const startToggle = () => {
     setStart((prev) => !prev);
