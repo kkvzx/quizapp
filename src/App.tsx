@@ -18,5 +18,3 @@ export const App = () => {
     </div>
   );
 };
-
-// NIECH PYTANIA BĘDĄ DOSTARCZANE BEZPOŚREDNIO Z ELEMENTU QUIZAPP DO SINGLEQUESTION
