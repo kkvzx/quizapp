@@ -1,14 +1,6 @@
 import { NONAME } from "dns";
 import React from "react";
-
-interface BtnProps {
-  ans: string;
-  choosedAns: string;
-  choosedAnsToggle: (ans: string, mainIndex: number) => void;
-  correctAnswer: string;
-  userChecked: boolean;
-  mainIndex: number;
-}
+import { BtnProps } from "./interfaces";
 
 export const BtnComponent = ({
   ans,
@@ -25,19 +17,41 @@ export const BtnComponent = ({
         choosedAnsToggle(ans, mainIndex);
       }}
       style={
+        // Użytkownik sprawdza
         userChecked
-          ? choosedAns === ans
-            ? choosedAns === correctAnswer
-              ? { backgroundColor: "#94D7A2", border: "none" }
-              : { backgroundColor: "#F8BCBC", border: "none", color: "#293264" }
-            : {
+          ? // Wybrana opcja
+            choosedAns === ans
+            ? // Jeżeli jest prawidłowa
+              choosedAns === correctAnswer
+              ? // To zielone
+                {
+                  backgroundColor: "#94D7A2",
+                  color: "black",
+                }
+              : // jeżeli źle to czerowne
+                {
+                  backgroundColor: "rgb(159, 87, 159)",
+                  color: "#293264",
+                  opacity: "0.5",
+                }
+            : // Pozostałe niewybrane opcje
+            ans === correctAnswer
+            ? // To zielone
+              { backgroundColor: "#94D7A2", border: "none", color: "black" }
+            : // jeżeli źle to szare // Pozostałe niewybrane opcje
+              {
                 backgroundColor: "none",
                 border: "0.75px solid #293264",
-                color: "#293264",
+                color: "grey",
                 opacity: "0.5",
               }
-          : choosedAns === ans
-          ? { backgroundColor: "#D6DBF5", border: "none" }
+          : // Jeżeli użytkownik nie sprawdza ale klika (przed sprawdzeniem) to zaznacza
+          choosedAns === ans
+          ? {
+              backgroundColor: "#8577c2ab",
+              border: "1px solid rgb(159, 87, 159)",
+              color: "white",
+            }
           : {}
       }
     ></button>

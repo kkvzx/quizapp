@@ -2,16 +2,8 @@ import React from "react";
 import { nanoid } from "nanoid";
 import "../styles/singleQuestion.css";
 import { BtnComponent } from "./BtnComponent";
+import { singleQuestionProps } from "./interfaces";
 
-interface singleQuestionProps {
-  question: string;
-  correctAnswer: string;
-  allAnswers: string[];
-  userChecked: boolean;
-  choosedAns: string;
-  mainIndex: number;
-  choosedAnsToggle: (ans: string, mainIndex: number) => void;
-}
 export const SingleQuestion = (props: singleQuestionProps) => {
   return (
     <div className="singleQuestion">
@@ -29,7 +21,7 @@ export const SingleQuestion = (props: singleQuestionProps) => {
           />
         ))}
       </div>
-      <hr />
+      <hr className="line" />
     </div>
   );
 };

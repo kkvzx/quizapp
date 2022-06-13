@@ -2,7 +2,7 @@ import React from "react";
 
 // This component is mixing answers before giving them to singleQuestion
 
-// RandNumGenerator creates and array of 4 random numbers without repeats
+// RandNumGenerator creates and array of 'lenghth' random numbers without repeats
 const randNumGenerator = (length: number): number[] => {
   let randNum = Math.floor(Math.random() * length);
   let randArr = [randNum];

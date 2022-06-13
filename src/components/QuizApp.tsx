@@ -8,6 +8,7 @@ export const QuizApp = () => {
   const [userChecked, setUserChecked] = React.useState<boolean>(false);
   const [choosedAns, setChoosedAns] = React.useState<string[]>([]);
   const [count, setCount] = React.useState<number>(0);
+  const [warning, setWarning] = React.useState(false);
 
   // Getting the data from API and creating additional property with all the answers ("allAnswers")
   React.useEffect(() => {
@@ -41,12 +42,17 @@ export const QuizApp = () => {
   };
   // Zatwierdzenie odpowiedzi - czy zostało naciśniete. Todo:Jeżeli tak to zablokuj zapisanie wybranej odpowiedzi.
   const check = () => {
-    setUserChecked((prev) => !prev);
-    !userChecked &&
-      apiData.map((obj, index) => {
-        obj.correct_answer === choosedAns[index] &&
-          setCount((prev) => prev + 1);
-      });
+    if (choosedAns.length === 5) {
+      setUserChecked((prev) => !prev);
+      setWarning(false);
+      !userChecked &&
+        apiData.map((obj, index) => {
+          obj.correct_answer === choosedAns[index] &&
+            setCount((prev) => prev + 1);
+        });
+    } else {
+      setWarning(true);
+    }
   };
 
   const playAgain = () => {
@@ -71,6 +77,7 @@ export const QuizApp = () => {
     setUserChecked(false);
     setChoosedAns([]);
     setCount(0);
+    setWarning(false);
   };
 
   const htmlElements = apiData.map((singleObj, index) => (
@@ -90,7 +97,10 @@ export const QuizApp = () => {
     <div>
       <div className="quizApp">{htmlElements}</div>
       <div className="scoreboard">
-        <p style={userChecked ? { display: "" } : { display: "none" }}>
+        <p style={warning ? { display: "" } : { display: "none" }}>
+          In order to prceed answer to all the questions
+        </p>
+        <p style={userChecked ? { display: "block" } : { display: "none" }}>
           You scored {count}/5 correct answers
         </p>
         <button
