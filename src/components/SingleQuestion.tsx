@@ -1,7 +1,7 @@
 import React from "react";
 import { nanoid } from "nanoid";
 import "../styles/singleQuestion.css";
-import { BtnComponent } from "./BtnComponent";
+import { Button } from "./Button/Button";
 import { singleQuestionProps } from "./interfaces";
 
 export const SingleQuestion = (props: singleQuestionProps) => {
@@ -10,10 +10,10 @@ export const SingleQuestion = (props: singleQuestionProps) => {
       <h3 dangerouslySetInnerHTML={{ __html: `${props.question}` }}></h3>
       <div className="btnsContainer">
         {props.allAnswers.map((obj) => (
-          <BtnComponent
+          <Button
             key={nanoid()}
-            ans={obj}
-            choosedAns={props.choosedAns}
+            answer={obj}
+            choosenAnswer={props.choosedAns}
             choosedAnsToggle={props.choosedAnsToggle}
             mainIndex={props.mainIndex}
             correctAnswer={props.correctAnswer}
