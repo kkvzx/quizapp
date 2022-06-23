@@ -1,15 +1,11 @@
-// RandNumGenerator creates and array of 'lenghth' random numbers without repeats
-const randNumGenerator = (length: number): number[] => {
-  const arrayOfRandomNumbers = [...new Array(length)].map(() =>  Math.floor(Math.random() * length))
-  return arrayOfRandomNumbers;
-};
+// masterMixer is 'injecting' correct answer in random position into array of incorrect answers
+export const masterMixer = (
+  incorrectArray: string[],
+  correctAnswer: string
+): string[] => {
+  let mixedAnswers: string[] = [...incorrectArray];
+  const randomNumber: number = Math.floor(Math.random() * mixedAnswers.length);
+  mixedAnswers.splice(randomNumber, 0, correctAnswer);
 
-export const masterMixer = (arr: string[], el: string): string[] => {
-  const primaryArr: string[] = [...arr, el];
-  const randomNumArr: number[] = randNumGenerator(primaryArr.length);
-  const newArr: string[] = randomNumArr.map(
-    (singleNum) => primaryArr[singleNum]
-  );
-
-  return newArr;
+  return mixedAnswers;
 };

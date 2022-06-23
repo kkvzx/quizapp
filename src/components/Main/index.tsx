@@ -1,7 +1,8 @@
 import React from "react";
-import "./styles/App.css";
-import { QuizApp } from "./components/QuizApp";
-import { WelcomePage } from "./components/WelcomePage";
+import "../GlobalStyling.css";
+import { QuizApp } from "../../components/QuizApp/index";
+import { WelcomePage } from "../../components/WelcomePage";
+import { AppWrapper, AppSection } from "./AppElements";
 
 export const App = () => {
   const [start, setStart] = React.useState(false);
@@ -11,11 +12,11 @@ export const App = () => {
   };
 
   return (
-    <div className="appWrapper">
-      <div className="app">
+    <AppWrapper>
+      <AppSection>
         {start ? <QuizApp /> : <WelcomePage startToggle={startToggle} />}
-      </div>
-    </div>
+      </AppSection>
+    </AppWrapper>
   );
 };
 

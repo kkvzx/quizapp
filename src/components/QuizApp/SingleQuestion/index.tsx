@@ -1,14 +1,21 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import "../styles/singleQuestion.css";
-import { Button } from "./Button/Button";
-import { singleQuestionProps } from "./interfaces";
+import { Button } from "../Button";
+import { singleQuestionProps } from "../../interfaces";
+import {
+  BreakLine,
+  ButtonsContainer,
+  SingleQuestionHeader,
+  SingleQuestionWrapper,
+} from "./SingleQustionElements";
 
 export const SingleQuestion = (props: singleQuestionProps) => {
   return (
-    <div className="singleQuestion">
-      <h3 dangerouslySetInnerHTML={{ __html: `${props.question}` }}></h3>
-      <div className="btnsContainer">
+    <SingleQuestionWrapper>
+      <SingleQuestionHeader
+        dangerouslySetInnerHTML={{ __html: `${props.question}` }}
+      />
+      <ButtonsContainer>
         {props.allAnswers.map((obj) => (
           <Button
             key={nanoid()}
@@ -20,8 +27,8 @@ export const SingleQuestion = (props: singleQuestionProps) => {
             userChecked={props.userChecked}
           />
         ))}
-      </div>
-      <hr className="line" />
-    </div>
+      </ButtonsContainer>
+      <BreakLine />
+    </SingleQuestionWrapper>
   );
 };

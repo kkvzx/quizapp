@@ -1,7 +1,13 @@
 import React, { FC } from "react";
 import { nanoid } from "nanoid";
 import { SingleQuestion } from "./SingleQuestion";
-import { masterMixer } from "./masterMIxer";
+import { masterMixer } from "../masterMIxer";
+import {
+  QuestionsWrapper,
+  Scoreboard,
+  ScoreboardButton,
+  ScoreboardP,
+} from "./QuizAppElements";
 
 export const QuizApp = () => {
   const [apiData, setApiData] = React.useState<any[]>([]);
@@ -27,11 +33,13 @@ export const QuizApp = () => {
         );
       })
       .catch((error) => {
-        console.log("error");
+        alert(
+          "Problem occured while getting the data. Please try to restart the game"
+        );
       });
   }, []);
 
-  // Zpaisanie wybranej odpowiedzi - funckjonalność po zatwierdzneiu
+  // Saving choosed Answer - Functionality after submit
   const choosedAnsToggle = (ans: string, index: number) => {
     !userChecked &&
       setChoosedAns((prev) => {
@@ -40,7 +48,7 @@ export const QuizApp = () => {
         return newArr;
       });
   };
-  // Zatwierdzenie odpowiedzi - czy zostało naciśniete. Todo:Jeżeli tak to zablokuj zapisanie wybranej odpowiedzi.
+  // Submit the answer
   const check = () => {
     if (choosedAns.length === 5) {
       setUserChecked((prev) => !prev);
@@ -54,7 +62,7 @@ export const QuizApp = () => {
       setWarning(true);
     }
   };
-
+  // Restart the game
   const playAgain = () => {
     fetch("https://opentdb.com/api.php?amount=5")
       .then((response) => response.json())
@@ -71,7 +79,9 @@ export const QuizApp = () => {
         );
       })
       .catch((error) => {
-        console.log("error");
+        alert(
+          "Problem occured while getting the data. Please try to restart the game"
+        );
       });
 
     setUserChecked(false);
@@ -94,30 +104,25 @@ export const QuizApp = () => {
   ));
 
   return (
-    <div>
-      <div className="quizApp">{htmlElements}</div>
-      <div className="scoreboard">
-        <p style={warning ? { display: "" } : { display: "none" }}>
-          In order to prceed answer to all the questions
-        </p>
-        <p style={userChecked ? { display: "block" } : { display: "none" }}>
-          You scored {count}/5 correct answers
-        </p>
-        <button
-          onClick={() => check()}
-          style={userChecked ? { display: "none" } : { display: "" }}
-          className="finishBtn"
-        >
-          Check answers
-        </button>
-        <button
-          onClick={() => playAgain()}
-          style={!userChecked ? { display: "none" } : { display: "" }}
-          className="finishBtn"
-        >
-          Play again
-        </button>
-      </div>
-    </div>
+    <>
+      <QuestionsWrapper>{htmlElements}</QuestionsWrapper>
+      <Scoreboard>
+        {warning && (
+          <ScoreboardP>In order to proceed answer to all questions</ScoreboardP>
+        )}
+        {userChecked && (
+          <ScoreboardP>You scored {count}/5 correct answers</ScoreboardP>
+        )}
+        {userChecked ? (
+          <ScoreboardButton onClick={() => playAgain()}>
+            Play again
+          </ScoreboardButton>
+        ) : (
+          <ScoreboardButton onClick={() => check()}>
+            Check answers
+          </ScoreboardButton>
+        )}
+      </Scoreboard>
+    </>
   );
 };
